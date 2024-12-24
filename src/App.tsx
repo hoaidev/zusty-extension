@@ -25,8 +25,9 @@ const App = () => {
     if (connected.current && port.current) {
       port.current.onMessage.addListener((message) => {
         if (message.body === "actionAndStateSnapshot") {
+          const [name, action] = message.action.split("-");
           const store = JSON.parse(message.store);
-          setStore(store);
+          setStore(name, store);
 
           const timestamp = new Date().toLocaleString();
           const currentStateSnapshot = JSON.parse(message.nextState);
@@ -39,7 +40,7 @@ const App = () => {
           const prevState = JSON.parse(message.prevState);
           const nextState = JSON.parse(message.nextState);
           const currentDiffWithTimestamp = {
-            action: message.action,
+            action: action,
             actionCompleteTime: message.actionCompleteTime,
             prevState,
             nextState,

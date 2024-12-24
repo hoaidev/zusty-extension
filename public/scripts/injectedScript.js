@@ -1,6 +1,3 @@
-// grab the users application store
-const store = window.store;
-
 const findReactComponents = (element) => {
   const components = [];
 
@@ -9,7 +6,7 @@ const findReactComponents = (element) => {
     const isComponent =
       fiberNode && fiberNode.elementType && fiberNode.elementType.name;
     const isNotHtmlElement =
-      fiberNode && fiberNode.type && typeof fiberNode.type === 'function';
+      fiberNode && fiberNode.type && typeof fiberNode.type === "function";
 
     if (isComponent || isNotHtmlElement) {
       // Only push component names that are not 'div' or 'h1'
@@ -29,7 +26,7 @@ const findReactComponents = (element) => {
   Array.from(element.children).forEach((child) => {
     // Find the internal React fiber node
     const key = Object.keys(child).find((key) =>
-      key.startsWith('__reactFiber$')
+      key.startsWith("__reactFiber$")
     );
     const fiberNode = child[key];
     if (fiberNode) {
@@ -40,18 +37,18 @@ const findReactComponents = (element) => {
   return components;
 };
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 const reactComponents = findReactComponents(rootElement);
 
 const hierarchyConv = (state) => {
   const rootNode = {
-    name: 'STATE',
+    name: "STATE",
     children: [],
   };
 
   const addNodeToTree = (key, value, parent) => {
     // Check if the value is an object and not null
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === "object" && value !== null) {
       // Create a new node for the object
       const newNode = { name: key, children: [] };
       // recurse add children for each entry in the object
@@ -81,7 +78,7 @@ const d3hierarchy2 = hierarchyConv(reactComponents);
 
 setInterval(() => {
   window.postMessage({
-    type: 'REACT_COMPONENTS',
+    type: "REACT_COMPONENTS",
     data: JSON.stringify(d3hierarchy2),
   });
 }, 1000);

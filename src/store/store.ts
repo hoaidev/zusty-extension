@@ -10,7 +10,7 @@ export interface State {
   actionSnapshotArray: Record<string, unknown>[];
   diffArray: Array<ActionDiff>;
   activeTab: string;
-  store: Record<string, unknown>;
+  store: Map<string, Record<string, unknown>>;
   storeButton: boolean;
   treeButton: boolean;
   actionButton: boolean;
@@ -25,7 +25,7 @@ interface Actions {
   addDiffSnapshot: (diff: ActionDiff) => void;
   setPrevState: (pState: NullableRecord) => void;
   setNextState: (nState: NullableRecord) => void;
-  setStore: (inputStore: Record<string, unknown>) => void;
+  setStore: (name: string, inputStore: Record<string, unknown>) => void;
   setD3data: (data: RawNodeDatum | null) => void;
   resetStore: () => void;
 }
@@ -37,14 +37,14 @@ const initialValues: State = {
   actionSnapshotArray: [],
   diffArray: [],
   activeTab: "actionLog",
-  store: {},
+  store: new Map(),
   storeButton: false,
   treeButton: false,
   actionButton: true,
   d3data: null,
 };
 
-const useStore = create<State & Actions>((set) => ({
+const useStore = create<State & Actions>((set, get) => ({
   ...initialValues,
   setActiveButton: (buttonName: string) => {
     set(() => ({
@@ -66,7 +66,11 @@ const useStore = create<State & Actions>((set) => ({
     set((state) => ({ diffArray: [...state.diffArray, diff] })),
   setPrevState: (pState) => set({ prevState: pState }),
   setNextState: (nState) => set({ nextState: nState }),
-  setStore: (inputStore) => set({ store: inputStore }),
+  setStore: (name, inputStore) => {
+    const store = new Map(get().store);
+    store.set(name, inputStore);
+    set({ store });
+  },
   setD3data: (data) => set({ d3data: data }),
   resetStore: () => set({ ...initialValues }),
 }));

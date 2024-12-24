@@ -4,14 +4,7 @@ import ReactJson from "@microlink/react-json-view";
 const Store = () => {
   const { store } = useStore();
 
-  const textChange = () => {
-    for (const key in store) {
-      if (store[key] === "[object Object]") {
-        store[key] = "{}";
-      }
-    }
-  };
-  textChange();
+  const storeConverted = Object.fromEntries(store.entries());
 
   return (
     <>
@@ -23,7 +16,7 @@ const Store = () => {
         style={{ overflowY: "auto", height: "93vh" }}
       >
         <ReactJson
-          src={store}
+          src={storeConverted}
           theme="hopscotch"
           displayDataTypes={false}
           enableClipboard={false}
