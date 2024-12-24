@@ -3,7 +3,7 @@ import { useState } from "react";
 import useStore from "../store/store";
 
 const StateSnapshots = () => {
-  const { stateSnapshotArray } = useStore();
+  const stateSnapshotArray = useStore((store) => store.stateSnapshotArray);
 
   // To handle toggling to JSON format display
   const [showAsJSON, setShowAsJSON] = useState(true); // Set to true for default JSON view
@@ -14,8 +14,8 @@ const StateSnapshots = () => {
 
   return (
     <div
-      className="flex flex-col border-t-2 border-lt-grey w-full m-auto"
-      style={{ height: "93vh", overflow: "auto" }}
+      className="flex flex-col border-t-2 border-lt-grey w-full m-auto overflow-auto"
+      style={{ height: "93vh" }}
     >
       {/* Toggle Switch */}
       <label className="relative inline-flex items-center mb-2 mt-2 ml-2 cursor-pointer">

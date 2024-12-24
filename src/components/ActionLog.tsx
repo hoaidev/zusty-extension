@@ -3,7 +3,7 @@ import useStore from "../store/store";
 import Diff from "./Diff";
 
 const ActionLog = () => {
-  const { diffArray, setPrevState, setNextState } = useStore();
+  const { diffArray, setPrevState, setNextState, resetStore } = useStore();
   // selectedDiv for dynamically highlighting elements when diff button is clicked
   const [selectedDiv, setSelectedDiv] = useState<ActionDiff | null>(null);
   // showRenderTimes for toggle to show or hide metrics
@@ -36,8 +36,7 @@ const ActionLog = () => {
   };
 
   return (
-    <div>
-      {/* Toggle Switch */}
+    <>
       <label className="mt-3 ml-2 relative inline-flex items-center mb-5 cursor-pointer">
         <input
           type="checkbox"
@@ -50,17 +49,17 @@ const ActionLog = () => {
           Show Render Times
         </span>
       </label>
-      {/* Action Log Section */}
+      <button
+        onClick={resetStore}
+        className={`rounded bg-orange-500 py-1 px-2 border text-white border-light-codebg float-end`}
+      >
+        Reset store
+      </button>
 
       <div className="flex flex-row justify-between bg-code-bg">
         <div
-          className="flex items-center action-log border-b-2 border-lt-grey border-none rounded-md"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "91vh",
-            overflowY: "auto",
-          }}
+          className="flex flex-col overflow-y-auto items-center action-log border-b-2 border-lt-grey border-none rounded-md"
+          style={{ height: "91vh" }}
         >
           <h1 className="text-center text-xl font-bold text-white m-2 w-72 mb-0 mt-0">
             Action Log
@@ -118,7 +117,7 @@ const ActionLog = () => {
           <Diff />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -27,9 +27,10 @@ interface Actions {
   setNextState: (nState: NullableRecord) => void;
   setStore: (inputStore: Record<string, unknown>) => void;
   setD3data: (data: RawNodeDatum | null) => void;
+  resetStore: () => void;
 }
 
-const useStore = create<State & Actions>((set) => ({
+const initialValues: State = {
   prevState: null,
   nextState: null,
   stateSnapshotArray: [],
@@ -41,6 +42,10 @@ const useStore = create<State & Actions>((set) => ({
   treeButton: false,
   actionButton: true,
   d3data: null,
+};
+
+const useStore = create<State & Actions>((set) => ({
+  ...initialValues,
   setActiveButton: (buttonName: string) => {
     set(() => ({
       storeButton: buttonName === "storeButton",
@@ -63,6 +68,7 @@ const useStore = create<State & Actions>((set) => ({
   setNextState: (nState) => set({ nextState: nState }),
   setStore: (inputStore) => set({ store: inputStore }),
   setD3data: (data) => set({ d3data: data }),
+  resetStore: () => set({ ...initialValues }),
 }));
 
 export default useStore;
