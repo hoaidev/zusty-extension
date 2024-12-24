@@ -1,24 +1,46 @@
 {
-    "name": "react-vite-chrome-extension",
-    "description": "Starter pack for Chrome extension development uses React + Vite",
-    "version": "0.0.1",
-    "manifest_version": 3,
-    "icons": {
-        "16": "logo16.png",
-        "48": "logo48.png",
-        "128": "logo128.png"
-    },
-    "action": {
-        "default_popup": "index.html",
-        "default_icon": {
-            "16": "logo16.png",
-            "48": "logo48.png",
-            "128": "logo128.png"
-        }
-    },
-    "permissions": [
-        "storage",
-        "tabs"
-    ],
-    "homepage_url": "https://timeless.co"
+  "name": "Zusty",
+  "description": "Zustand Developer Tool for Debugging",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "icons": {
+    "16": "logo16.png",
+    "48": "logo48.png",
+    "128": "logo128.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "logo16.png",
+      "48": "logo48.png",
+      "128": "logo128.png"
+    }
+  },
+  "devtools_page": "/html/devtools.html",
+
+  "background": {
+    "service_worker": "/scripts/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/scripts/contentScript.js"],
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "/scripts/contentScript.js",
+        "/scripts/injectedScript.js",
+        "styles.css"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": ["storage", "tabs", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "externally_connectable": {
+    "matches": ["<all_urls>"]
+  }
 }
